@@ -4,6 +4,11 @@
  */
 package VIEW;
 
+import Modelo.ListaProduto;
+import Modelo.Produto;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author mello
@@ -15,6 +20,31 @@ public class TelaListaProdutos extends javax.swing.JFrame {
      */
     public TelaListaProdutos() {
         initComponents();
+        iniciarTabela();
+    }
+
+    DefaultTableModel modeloTabela;
+
+    private void iniciarTabela() {
+        modeloTabela = new DefaultTableModel(
+                new Object[]{"Nome", "Descrição", "Quantidade", "Fornecedor"}, 0
+        );
+
+        jTable1.setModel(modeloTabela);
+        atualizarTabela();
+    }
+
+    public void atualizarTabela() {
+        modeloTabela.setRowCount(0);
+
+        for (Produto p : ListaProduto.getProduto()) {
+            modeloTabela.addRow(new Object[]{
+                p.getNome(),
+                p.getDescricao(),
+                p.getQuantidade(),
+                p.getFornecedor()
+            });
+        }
     }
 
     /**
@@ -27,7 +57,7 @@ public class TelaListaProdutos extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        lblVoltar = new javax.swing.JButton();
+        btnVoltar = new javax.swing.JButton();
         lblTexto = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -40,13 +70,13 @@ public class TelaListaProdutos extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setMinimumSize(new java.awt.Dimension(630, 446));
 
-        lblVoltar.setBackground(new java.awt.Color(102, 51, 255));
-        lblVoltar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        lblVoltar.setForeground(new java.awt.Color(255, 255, 255));
-        lblVoltar.setText("Voltar");
-        lblVoltar.addActionListener(new java.awt.event.ActionListener() {
+        btnVoltar.setBackground(new java.awt.Color(102, 51, 255));
+        btnVoltar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnVoltar.setForeground(new java.awt.Color(255, 255, 255));
+        btnVoltar.setText("Voltar");
+        btnVoltar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                lblVoltarActionPerformed(evt);
+                btnVoltarActionPerformed(evt);
             }
         });
 
@@ -54,15 +84,13 @@ public class TelaListaProdutos extends javax.swing.JFrame {
         lblTexto.setForeground(new java.awt.Color(0, 0, 0));
         lblTexto.setText("Lista de Produtos");
 
-        jTable1.setAutoCreateRowSorter(true);
         jTable1.setBackground(new java.awt.Color(204, 204, 255));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
-                "ID Produto", "Nome do Produto", "Descrição", "Quantidade", "Fornecedor"
+                "ID Produto", "Nome do Produto", "Descrição", "Fornecedor"
             }
         ));
         jTable1.setShowGrid(true);
@@ -104,7 +132,7 @@ public class TelaListaProdutos extends javax.swing.JFrame {
                 .addContainerGap())
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblVoltar, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnVoltar, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
@@ -126,7 +154,7 @@ public class TelaListaProdutos extends javax.swing.JFrame {
                 .addGap(24, 24, 24)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
-                .addComponent(lblVoltar, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnVoltar, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20))
         );
 
@@ -142,16 +170,17 @@ public class TelaListaProdutos extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNomeActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNomeActionPerformed
 
-    private void lblVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lblVoltarActionPerformed
+    private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
         new TelaControleEstoque().setVisible(true);
         this.dispose();
-    }//GEN-LAST:event_lblVoltarActionPerformed
+    }//GEN-LAST:event_btnVoltarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -189,13 +218,13 @@ public class TelaListaProdutos extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnVoltar;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JLabel lblTexto;
-    private javax.swing.JButton lblVoltar;
     private javax.swing.JTextField txtNome;
     // End of variables declaration//GEN-END:variables
 }
