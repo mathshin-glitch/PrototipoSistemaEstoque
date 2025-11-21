@@ -94,6 +94,11 @@ public class TelaCadastrarFornecedor extends javax.swing.JFrame {
         lblVoltar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblVoltar.setForeground(new java.awt.Color(255, 255, 255));
         lblVoltar.setText("Voltar");
+        lblVoltar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lblVoltarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -188,6 +193,11 @@ public class TelaCadastrarFornecedor extends javax.swing.JFrame {
     private void txtTelefoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTelefoneActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtTelefoneActionPerformed
+
+    private void lblVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lblVoltarActionPerformed
+        new TelaControleEstoque().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_lblVoltarActionPerformed
 
     /**
      * @param args the command line arguments

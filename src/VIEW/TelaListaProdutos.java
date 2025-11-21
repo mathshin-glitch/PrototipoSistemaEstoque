@@ -44,6 +44,11 @@ public class TelaListaProdutos extends javax.swing.JFrame {
         lblVoltar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblVoltar.setForeground(new java.awt.Color(255, 255, 255));
         lblVoltar.setText("Voltar");
+        lblVoltar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lblVoltarActionPerformed(evt);
+            }
+        });
 
         lblTexto.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         lblTexto.setForeground(new java.awt.Color(0, 0, 0));
@@ -142,6 +147,11 @@ public class TelaListaProdutos extends javax.swing.JFrame {
     private void txtNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNomeActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNomeActionPerformed
+
+    private void lblVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lblVoltarActionPerformed
+        new TelaControleEstoque().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_lblVoltarActionPerformed
 
     /**
      * @param args the command line arguments

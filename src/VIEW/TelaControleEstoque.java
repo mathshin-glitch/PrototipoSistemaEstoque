@@ -73,25 +73,41 @@ public class TelaControleEstoque extends javax.swing.JFrame {
 
         btnCadastrar.setBackground(new java.awt.Color(218, 255, 255));
         btnCadastrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/Cadastrar Fornecedores.png"))); // NOI18N
+        btnCadastrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCadastrarActionPerformed(evt);
+            }
+        });
 
         btnProduto.setBackground(new java.awt.Color(218, 255, 255));
         btnProduto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/CadastrarProduto.png"))); // NOI18N
+        btnProduto.setDefaultCapable(false);
+        btnProduto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnProdutoActionPerformed(evt);
+            }
+        });
 
         btnEstoque.setBackground(new java.awt.Color(218, 255, 255));
         btnEstoque.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/MovimentacaoEstoque.png"))); // NOI18N
+        btnEstoque.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEstoqueActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(34, 34, 34)
+                .addGap(33, 33, 33)
                 .addComponent(btnCadastrar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnProduto)
-                .addGap(104, 104, 104)
+                .addGap(97, 97, 97)
                 .addComponent(btnEstoque)
-                .addGap(37, 37, 37))
+                .addGap(35, 35, 35))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -142,22 +158,24 @@ public class TelaControleEstoque extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(32, 32, 32)
                         .addComponent(lblCadastrar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 116, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(lblProduto)
-                        .addGap(99, 99, 99)
+                        .addGap(88, 88, 88)
                         .addComponent(lblEstoque)
                         .addGap(15, 15, 15)))
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(40, 40, 40)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(40, 40, 40)
+                        .addComponent(btnLista, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(48, 48, 48)
                         .addComponent(lblTexto)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 115, Short.MAX_VALUE)
                         .addComponent(lblTexto2)
-                        .addGap(109, 109, 109)
-                        .addComponent(lblTexto3))
-                    .addComponent(btnLista, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(102, 102, 102)
+                        .addComponent(lblTexto3)))
                 .addGap(40, 40, 40))
         );
         jPanel1Layout.setVerticalGroup(
@@ -197,8 +215,24 @@ public class TelaControleEstoque extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnListaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListaActionPerformed
-        // TODO add your handling code here:
+        new TelaListaProdutos().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnListaActionPerformed
+
+    private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
+        new TelaCadastrarFornecedor().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnCadastrarActionPerformed
+
+    private void btnProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProdutoActionPerformed
+        new TelaCadastrarProdutos().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnProdutoActionPerformed
+
+    private void btnEstoqueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEstoqueActionPerformed
+        new TelaMovimentacaoEstoque().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnEstoqueActionPerformed
 
     /**
      * @param args the command line arguments

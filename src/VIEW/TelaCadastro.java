@@ -4,10 +4,9 @@
  */
 package VIEW;
 
-/**
- *
- * @author mello
- */
+import javax.swing.JOptionPane;
+
+
 public class TelaCadastro extends javax.swing.JFrame {
 
     public TelaCadastro() {
@@ -122,7 +121,20 @@ public class TelaCadastro extends javax.swing.JFrame {
     }//GEN-LAST:event_txtEmailActionPerformed
 
     private void btnEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntrarActionPerformed
-        // TODO add your handling code here:
+        String nome = txtEmail.getText();
+        String senha = txtSenha.getText();
+        
+        if(txtEmail.getText().isEmpty() || txtSenha.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null,"Todos os campos precisam ser preenchidos","Erro ao Logar",JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        
+        String validacao = senha;
+        if(validacao.length() > 6){
+            new TelaControleEstoque().setVisible(true);
+        }else{
+            JOptionPane.showMessageDialog(null,"Sua senha deve ser maior que 6 caracteres","Erro ao Logar",JOptionPane.INFORMATION_MESSAGE);
+        }
     }//GEN-LAST:event_btnEntrarActionPerformed
 
     /**

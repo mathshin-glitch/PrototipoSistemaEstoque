@@ -10,7 +10,7 @@ import VIEW.TelaCadastro;
  *
  * @author mello
  */
-public class PrototipoSistemaEstoque {
+public class Main {
 
     /**
      * @param args the command line arguments
