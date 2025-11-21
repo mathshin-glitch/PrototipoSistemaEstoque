@@ -101,7 +101,7 @@ public class TelaCadastrarProdutos extends javax.swing.JFrame {
         });
 
         cbxFornecedor.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        cbxFornecedor.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione o Fornecedor", "Mercado Livre" }));
+        cbxFornecedor.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione o Fornecedor", "Mercado Livre", "Amazon", "Shopee", "Carrefour" }));
         cbxFornecedor.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         cbxFornecedor.setName(""); // NOI18N
 
@@ -195,31 +195,40 @@ public class TelaCadastrarProdutos extends javax.swing.JFrame {
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
         String nome = txtNome.getText();
         String descricao = txtDescricao.getText();
+
+        if (nome.isEmpty() || descricao.isEmpty() || txtQuantidade.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Preencha todos os campos");
+            return;
+        }
+
+        try {
+            int Validquantidade = Integer.parseInt(txtQuantidade.getText());
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Quantidade precisar ser numeros inteiros");
+            return;
+        }
+
+        if (cbxFornecedor.getSelectedIndex() == 0) {
+            JOptionPane.showMessageDialog(this, "Selecione um Fornecedor");
+            return;
+        } else {
+            String Validfornecedor = cbxFornecedor.getSelectedItem().toString();
+        }
+
+        int quantidade = Integer.parseInt(txtQuantidade.getText());
         String fornecedor = cbxFornecedor.getSelectedItem().toString();
-        int quantidade;
+        Produto p = new Produto(nome, descricao, quantidade, fornecedor);
+
+        ListaProduto.AdiconarProduto(p);
         
-        if(nome.isEmpty() || descricao.isEmpty()){
-            JOptionPane.showMessageDialog(null,"Preencha todos os campos");
-            return;
-        }
-        
-        try{
-            quantidade = Integer.parseInt(txtQuantidade.getText());
-        }catch(NumberFormatException e){
-            JOptionPane.showMessageDialog(this,"Quantiadade deve ser um número inteiro.");
-            return;
-        }
-        Produto p = new Produto(nome,descricao,quantidade,fornecedor);
-        
-        //Criar novo produto
-        ListaProduto.adicionarProduto(p);
-        
+        JOptionPane.showMessageDialog(null,"Produto Cadastrado com sucesso");
         txtNome.setText("");
         txtDescricao.setText("");
         txtQuantidade.setText("");
+        cbxFornecedor.setSelectedIndex(0);
         
-        JOptionPane.showMessageDialog(null, "Produto Cadastrado com sucesso");
-        
+
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
     /**

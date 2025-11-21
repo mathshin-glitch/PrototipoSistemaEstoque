@@ -4,15 +4,10 @@
  */
 package VIEW;
 
-/**
- *
- * @author mello
- */
+import javax.swing.JOptionPane;
+
 public class TelaCadastrarFornecedor extends javax.swing.JFrame {
 
-    /**
-     * Creates new form dd
-     */
     public TelaCadastrarFornecedor() {
         initComponents();
     }
@@ -89,6 +84,11 @@ public class TelaCadastrarFornecedor extends javax.swing.JFrame {
         btnCadastrar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnCadastrar.setForeground(new java.awt.Color(255, 255, 255));
         btnCadastrar.setText("Cadastrar");
+        btnCadastrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCadastrarActionPerformed(evt);
+            }
+        });
 
         lblVoltar.setBackground(new java.awt.Color(102, 51, 255));
         lblVoltar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -198,6 +198,16 @@ public class TelaCadastrarFornecedor extends javax.swing.JFrame {
         new TelaControleEstoque().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_lblVoltarActionPerformed
+
+    private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
+        JOptionPane.showMessageDialog(null,"Esta função estará disponível na próxima versão do projeto com integração ao banco de dados.");
+        txtNome.setText("");
+        txtTelefone.setText("");
+        txtCpfCnpj.setText("");
+        txtEmail.setText("");
+        txtEndereco.setText("");
+        return;
+    }//GEN-LAST:event_btnCadastrarActionPerformed
 
     /**
      * @param args the command line arguments

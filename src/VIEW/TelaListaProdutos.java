@@ -6,12 +6,13 @@ package VIEW;
 
 import Modelo.ListaProduto;
 import Modelo.Produto;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author mello
+ * @author mello/
  */
 public class TelaListaProdutos extends javax.swing.JFrame {
 
@@ -20,23 +21,20 @@ public class TelaListaProdutos extends javax.swing.JFrame {
      */
     public TelaListaProdutos() {
         initComponents();
-        iniciarTabela();
+        InicioTabela();
     }
 
     DefaultTableModel modeloTabela;
 
-    private void iniciarTabela() {
+    public void InicioTabela() {
         modeloTabela = new DefaultTableModel(
-                new Object[]{"Nome", "Descrição", "Quantidade", "Fornecedor"}, 0
-        );
-
+                new Object[]{"Nome", "Descrição", "Quantidade", "Fornecedor"}, 0);
         jTable1.setModel(modeloTabela);
         atualizarTabela();
     }
 
     public void atualizarTabela() {
-        modeloTabela.setRowCount(0);
-
+        modeloTabela.setNumRows(0);
         for (Produto p : ListaProduto.getProduto()) {
             modeloTabela.addRow(new Object[]{
                 p.getNome(),
@@ -63,7 +61,7 @@ public class TelaListaProdutos extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         txtNome = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        btnPesquisar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -109,10 +107,15 @@ public class TelaListaProdutos extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setBackground(new java.awt.Color(102, 51, 255));
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Pesquisar");
+        btnPesquisar.setBackground(new java.awt.Color(102, 51, 255));
+        btnPesquisar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnPesquisar.setForeground(new java.awt.Color(255, 255, 255));
+        btnPesquisar.setText("Pesquisar");
+        btnPesquisar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPesquisarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -137,7 +140,7 @@ public class TelaListaProdutos extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton1)
+                    .addComponent(btnPesquisar)
                     .addComponent(lblTexto))
                 .addGap(220, 220, 220))
         );
@@ -150,7 +153,7 @@ public class TelaListaProdutos extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                    .addComponent(btnPesquisar))
                 .addGap(24, 24, 24)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
@@ -181,6 +184,11 @@ public class TelaListaProdutos extends javax.swing.JFrame {
         new TelaControleEstoque().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnVoltarActionPerformed
+
+    private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
+        JOptionPane.showMessageDialog(null, "Essa Função só estara disponivel na proxima Versão projeto com o banco de dados");
+        txtNome.setText("");
+    }//GEN-LAST:event_btnPesquisarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -218,8 +226,8 @@ public class TelaListaProdutos extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnPesquisar;
     private javax.swing.JButton btnVoltar;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;

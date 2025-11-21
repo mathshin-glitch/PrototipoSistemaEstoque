@@ -5,6 +5,7 @@
 package Modelo;
 
 import java.util.ArrayList;
+import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -13,9 +14,9 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ListaProduto {
 
-    private static ArrayList<Produto> Listaprodutos = new ArrayList();
-
-    public static void adicionarProduto(Produto p){
+    private static List<Produto> Listaprodutos = new ArrayList<>();
+    
+    public static void AdiconarProduto(Produto p){
         Listaprodutos.add(p);
     }
     
@@ -23,8 +24,7 @@ public class ListaProduto {
         Listaprodutos.remove(index);
     }
     
-    public static ArrayList<Produto> getProduto(){
+    public static List<Produto> getProduto(){
         return Listaprodutos;
     }
-    
 }

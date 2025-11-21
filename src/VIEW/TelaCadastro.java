@@ -132,6 +132,7 @@ public class TelaCadastro extends javax.swing.JFrame {
         String validacao = senha;
         if(validacao.length() > 6){
             new TelaControleEstoque().setVisible(true);
+            this.dispose();
         }else{
             JOptionPane.showMessageDialog(null,"Sua senha deve ser maior que 6 caracteres","Erro ao Logar",JOptionPane.INFORMATION_MESSAGE);
         }
