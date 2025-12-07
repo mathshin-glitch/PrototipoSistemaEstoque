@@ -4,12 +4,29 @@
  */
 package VIEW;
 
+import classes.Fornecedor;
+import classes.PermissaoUtil;
+import dao.FornecedorDAO;
 import javax.swing.JOptionPane;
+import java.sql.Connection;
+import conexao.Conexao;
+import classes.Usuario;
 
 public class TelaCadastrarFornecedor extends javax.swing.JFrame {
 
-    public TelaCadastrarFornecedor() {
+    private Conexao conexao;
+    private Connection conn;
+    private Usuario usuariologado;
+
+    public TelaCadastrarFornecedor(Usuario usuario) {
         initComponents();
+        conexao = new Conexao();
+        conn = conexao.Conectar();
+        this.usuariologado = usuario;
+
+        btnCadastrar.setActionCommand("CADASTRAR_FORNECEDOR");
+
+        PermissaoUtil.aplicarPermissoes(usuario, btnCadastrar);
     }
 
     /**
@@ -195,18 +212,36 @@ public class TelaCadastrarFornecedor extends javax.swing.JFrame {
     }//GEN-LAST:event_txtTelefoneActionPerformed
 
     private void lblVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lblVoltarActionPerformed
-        new TelaControleEstoque().setVisible(true);
+        new TelaControleEstoque(usuariologado).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_lblVoltarActionPerformed
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
-        JOptionPane.showMessageDialog(null,"Esta função estará disponível na próxima versão do projeto com integração ao banco de dados.");
-        txtNome.setText("");
-        txtTelefone.setText("");
-        txtCpfCnpj.setText("");
-        txtEmail.setText("");
-        txtEndereco.setText("");
-        return;
+        Fornecedor f = new Fornecedor();
+        FornecedorDAO dao = new FornecedorDAO();
+        int resposta;
+
+        if (txtNome.getText().isEmpty() || txtEmail.getText().isEmpty() || txtCpfCnpj.getText().isEmpty() || txtTelefone.getText().isEmpty() || txtEndereco.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Prencha todos os campos para cadastrar");
+            return;
+        }
+
+        f.setNome(txtNome.getText());
+        f.setEmail(txtEmail.getText());
+        f.setCnpj_cpf(txtCpfCnpj.getText());
+        f.setTelefone(txtTelefone.getText());
+        f.setEndereco(txtEndereco.getText());
+
+        resposta = dao.inserir(f);
+        if (resposta == 1) {
+            JOptionPane.showMessageDialog(null, "Fornecedor cadastrado com sucesso");
+            txtNome.setText("");
+            txtEmail.setText("");
+            txtCpfCnpj.setText("");
+            txtTelefone.setText("");
+            txtEndereco.setText("");
+            txtNome.requestFocus();
+        }
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
     /**
@@ -240,7 +275,7 @@ public class TelaCadastrarFornecedor extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new TelaCadastrarFornecedor().setVisible(true);
+                //   new TelaCadastrarFornecedor().setVisible(true);
             }
         });
     }

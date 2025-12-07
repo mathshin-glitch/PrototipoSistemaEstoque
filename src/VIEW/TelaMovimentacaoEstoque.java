@@ -4,19 +4,49 @@
  */
 package VIEW;
 
+import classes.PermissaoUtil;
+import conexao.Conexao;
+import dao.MovimentacaoEstoqueDAO;
+import java.awt.Color;
+import java.awt.Component;
+import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import static javax.swing.SwingConstants.CENTER;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import java.sql.Connection;
+import classes.Usuario;
 
-/**
- *
- * @author mello
- */
 public class TelaMovimentacaoEstoque extends javax.swing.JFrame {
 
-    /**
-     * Creates new form TelaMovimentacaoEstoque
-     */
-    public TelaMovimentacaoEstoque() {
+    private Conexao conexao;
+    private Connection conn;
+    private Usuario usuariologado;
+
+    public TelaMovimentacaoEstoque(Usuario usuario) {
         initComponents();
+        conexao = new Conexao();
+        conn = conexao.Conectar();
+        this.usuariologado = usuario;
+        carregarTabelaEstoque("");
+
+        btnRegistrar.setActionCommand("MOVIMENTAR_ESTOQUE");
+
+        PermissaoUtil.aplicarPermissoes(usuario, btnRegistrar);
+    }
+
+    public void carregarTabelaEstoque(String filtroFornecedor) {
+
+        MovimentacaoEstoqueDAO dao = new MovimentacaoEstoqueDAO();
+        List<Object[]> lista = dao.listarProdutosComFornecedor(filtroFornecedor);
+
+        DefaultTableModel modelo = (DefaultTableModel) TabelaEstoque.getModel();
+        modelo.setRowCount(0); // limpar tabela
+
+        for (Object[] linha : lista) {
+            modelo.addRow(linha);
+        }
     }
 
     /**
@@ -32,19 +62,20 @@ public class TelaMovimentacaoEstoque extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         lblTexto = new javax.swing.JLabel();
         lblNome = new javax.swing.JLabel();
-        txtNome = new javax.swing.JTextField();
+        txtProduto = new javax.swing.JTextField();
         lblDescricao = new javax.swing.JLabel();
-        txtTelefone = new javax.swing.JTextField();
-        txtNome1 = new javax.swing.JTextField();
+        txtQuantidade = new javax.swing.JTextField();
+        txtFornecedor = new javax.swing.JTextField();
         lblNome1 = new javax.swing.JLabel();
         lblTipo = new javax.swing.JLabel();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
+        rbEntrada = new javax.swing.JRadioButton();
+        rbSaida = new javax.swing.JRadioButton();
         jLabel2 = new javax.swing.JLabel();
-        btnSalvar = new javax.swing.JButton();
+        btnRegistrar = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTable3 = new javax.swing.JTable();
+        TabelaEstoque = new javax.swing.JTable();
         btnVoltar = new javax.swing.JButton();
+        btnVoltar1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -59,9 +90,9 @@ public class TelaMovimentacaoEstoque extends javax.swing.JFrame {
         lblNome.setForeground(new java.awt.Color(0, 0, 0));
         lblNome.setText("Produtos");
 
-        txtNome.addActionListener(new java.awt.event.ActionListener() {
+        txtProduto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNomeActionPerformed(evt);
+                txtProdutoActionPerformed(evt);
             }
         });
 
@@ -69,15 +100,15 @@ public class TelaMovimentacaoEstoque extends javax.swing.JFrame {
         lblDescricao.setForeground(new java.awt.Color(0, 0, 0));
         lblDescricao.setText("Quantidade");
 
-        txtTelefone.addActionListener(new java.awt.event.ActionListener() {
+        txtQuantidade.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtTelefoneActionPerformed(evt);
+                txtQuantidadeActionPerformed(evt);
             }
         });
 
-        txtNome1.addActionListener(new java.awt.event.ActionListener() {
+        txtFornecedor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNome1ActionPerformed(evt);
+                txtFornecedorActionPerformed(evt);
             }
         });
 
@@ -89,18 +120,18 @@ public class TelaMovimentacaoEstoque extends javax.swing.JFrame {
         lblTipo.setForeground(new java.awt.Color(0, 0, 0));
         lblTipo.setText("TIPO");
 
-        jRadioButton1.setBackground(new java.awt.Color(255, 255, 255));
-        buttonGroup1.add(jRadioButton1);
-        jRadioButton1.setForeground(new java.awt.Color(0, 0, 0));
-        jRadioButton1.setText("(ENTRADA)");
+        rbEntrada.setBackground(new java.awt.Color(255, 255, 255));
+        buttonGroup1.add(rbEntrada);
+        rbEntrada.setForeground(new java.awt.Color(0, 0, 0));
+        rbEntrada.setText("(ENTRADA)");
 
-        jRadioButton2.setBackground(new java.awt.Color(255, 255, 255));
-        buttonGroup1.add(jRadioButton2);
-        jRadioButton2.setForeground(new java.awt.Color(0, 0, 0));
-        jRadioButton2.setText("(SAIDA)");
-        jRadioButton2.addActionListener(new java.awt.event.ActionListener() {
+        rbSaida.setBackground(new java.awt.Color(255, 255, 255));
+        buttonGroup1.add(rbSaida);
+        rbSaida.setForeground(new java.awt.Color(0, 0, 0));
+        rbSaida.setText("(SAIDA)");
+        rbSaida.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton2ActionPerformed(evt);
+                rbSaidaActionPerformed(evt);
             }
         });
 
@@ -108,17 +139,18 @@ public class TelaMovimentacaoEstoque extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(0, 0, 0));
         jLabel2.setText("ou");
 
-        btnSalvar.setBackground(new java.awt.Color(102, 51, 255));
-        btnSalvar.setForeground(new java.awt.Color(255, 255, 255));
-        btnSalvar.setText("Salvar");
-        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
+        btnRegistrar.setBackground(new java.awt.Color(102, 51, 255));
+        btnRegistrar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnRegistrar.setForeground(new java.awt.Color(255, 255, 255));
+        btnRegistrar.setText("Registrar");
+        btnRegistrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSalvarActionPerformed(evt);
+                btnRegistrarActionPerformed(evt);
             }
         });
 
-        jTable3.setBackground(new java.awt.Color(204, 204, 255));
-        jTable3.setModel(new javax.swing.table.DefaultTableModel(
+        TabelaEstoque.setBackground(new java.awt.Color(204, 204, 255));
+        TabelaEstoque.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -126,14 +158,25 @@ public class TelaMovimentacaoEstoque extends javax.swing.JFrame {
                 "Nome do Produto", "Quantidade Atual", "Nome do Fornecedor"
             }
         ));
-        jScrollPane3.setViewportView(jTable3);
+        jScrollPane3.setViewportView(TabelaEstoque);
 
         btnVoltar.setBackground(new java.awt.Color(102, 51, 255));
+        btnVoltar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnVoltar.setForeground(new java.awt.Color(255, 255, 255));
         btnVoltar.setText("Voltar");
         btnVoltar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnVoltarActionPerformed(evt);
+            }
+        });
+
+        btnVoltar1.setBackground(new java.awt.Color(102, 51, 255));
+        btnVoltar1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnVoltar1.setForeground(new java.awt.Color(255, 255, 255));
+        btnVoltar1.setText("Historico de Movimentações");
+        btnVoltar1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVoltar1ActionPerformed(evt);
             }
         });
 
@@ -148,7 +191,7 @@ public class TelaMovimentacaoEstoque extends javax.swing.JFrame {
                         .addComponent(lblTexto)
                         .addGap(152, 152, 152))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(txtNome1, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(190, 190, 190))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(lblNome1)
@@ -157,20 +200,22 @@ public class TelaMovimentacaoEstoque extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(185, 185, 185)
-                        .addComponent(jRadioButton1)
+                        .addComponent(rbEntrada)
                         .addGap(27, 27, 27)
                         .addComponent(jLabel2)
                         .addGap(34, 34, 34)
-                        .addComponent(jRadioButton2))
+                        .addComponent(rbSaida))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(267, 267, 267)
-                        .addComponent(btnSalvar)))
+                        .addComponent(btnRegistrar)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(40, 40, 40)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnVoltar)
+                        .addComponent(btnVoltar, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnVoltar1)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -182,12 +227,12 @@ public class TelaMovimentacaoEstoque extends javax.swing.JFrame {
                                         .addComponent(lblNome)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 201, Short.MAX_VALUE))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(txtProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(lblTipo)
                                         .addGap(44, 44, 44)))
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtQuantidade, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                         .addComponent(lblDescricao)
                                         .addGap(81, 81, 81)))))
@@ -201,7 +246,7 @@ public class TelaMovimentacaoEstoque extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(lblNome1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtNome1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(15, 15, 15)
@@ -209,26 +254,28 @@ public class TelaMovimentacaoEstoque extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(lblDescricao)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(txtQuantidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(lblNome)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(txtProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(46, 46, 46)
                         .addComponent(lblTipo)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jRadioButton1)
-                    .addComponent(jRadioButton2)
+                    .addComponent(rbEntrada)
+                    .addComponent(rbSaida)
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnSalvar)
+                .addComponent(btnRegistrar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnVoltar)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnVoltar, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnVoltar1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(31, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -246,31 +293,116 @@ public class TelaMovimentacaoEstoque extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtTelefoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTelefoneActionPerformed
+    private void txtQuantidadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtQuantidadeActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtTelefoneActionPerformed
+    }//GEN-LAST:event_txtQuantidadeActionPerformed
 
-    private void txtNome1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNome1ActionPerformed
+    private void txtFornecedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFornecedorActionPerformed
+        String filtro = txtFornecedor.getText().trim();
+        carregarTabelaEstoque(filtro);
+    }//GEN-LAST:event_txtFornecedorActionPerformed
+
+    private void rbSaidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSaidaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtNome1ActionPerformed
+    }//GEN-LAST:event_rbSaidaActionPerformed
 
-    private void jRadioButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton2ActionPerformed
+    private void txtProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtProdutoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jRadioButton2ActionPerformed
+    }//GEN-LAST:event_txtProdutoActionPerformed
 
-    private void txtNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNomeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtNomeActionPerformed
+    private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
+        String nomeProduto = txtProduto.getText().trim();
+        String qtdStr = txtQuantidade.getText().trim();
 
-    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        JOptionPane.showMessageDialog(null, "Essa Função só estara disponivel na proxima Versão projeto com o banco de dados");
-        txtNome.setText("");
-    }//GEN-LAST:event_btnSalvarActionPerformed
+        // Validações
+        if (nomeProduto.isEmpty() || qtdStr.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Preencha o nome do produto e a quantidade!");
+            return;
+        }
+
+        int quantidade;
+        try {
+            quantidade = Integer.parseInt(qtdStr);
+            if (quantidade <= 0) {
+                JOptionPane.showMessageDialog(this, "Quantidade deve ser maior que zero!");
+                return;
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Quantidade inválida!");
+            return;
+        }
+
+        // Verificar se usuário escolheu Entrada ou Saída
+        String tipo = "";
+        if (rbEntrada.isSelected()) {
+            tipo = "ENTRADA";
+        } else if (rbSaida.isSelected()) {
+            tipo = "SAIDA";
+        } else {
+            JOptionPane.showMessageDialog(this, "Selecione Entrada ou Saída!");
+            return;
+        }
+
+        MovimentacaoEstoqueDAO daoP = new MovimentacaoEstoqueDAO();
+
+        // Buscar ID pelo nome
+        Integer idProduto = daoP.buscarIdDoProduto(nomeProduto);
+        if (idProduto == null) {
+            JOptionPane.showMessageDialog(this, "Produto não encontrado!");
+            return;
+        }
+
+        // Pegar quantidade atual
+        int quantidadeAtual = daoP.buscarQuantidadeAtual(idProduto);
+        if (quantidadeAtual < 0) {
+            JOptionPane.showMessageDialog(this, "Erro ao obter quantidade atual!");
+            return;
+        }
+
+        // Calcular nova quantidade
+        int novaQuantidade = quantidadeAtual;
+
+        if (tipo.equals("ENTRADA")) {
+            novaQuantidade += quantidade;
+        } else { // SAIDA
+            if (quantidade > quantidadeAtual) {
+                JOptionPane.showMessageDialog(this, "Estoque insuficiente!");
+                return;
+            }
+            novaQuantidade -= quantidade;
+        }
+
+        // Atualizar estoque
+        boolean ok = daoP.atualizarQuantidade(idProduto, novaQuantidade);
+
+        if (!ok) {
+            JOptionPane.showMessageDialog(this, "Erro ao atualizar estoque!");
+            return;
+        }
+
+        // Registrar historico
+        MovimentacaoEstoqueDAO daoM = new MovimentacaoEstoqueDAO();
+        daoM.registrarMovimentacao(idProduto, tipo, quantidade);
+
+        JOptionPane.showMessageDialog(this, "Movimentação registrada com sucesso!");
+
+        // Limpar campos
+        txtProduto.setText("");
+        txtQuantidade.setText("");
+        rbEntrada.setSelected(false);
+        rbSaida.setSelected(false);
+        carregarTabelaEstoque(txtFornecedor.getText().trim());
+    }//GEN-LAST:event_btnRegistrarActionPerformed
 
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
-        new TelaControleEstoque().setVisible(true);
+        new TelaControleEstoque(usuariologado).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnVoltarActionPerformed
+
+    private void btnVoltar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltar1ActionPerformed
+        new TelaHistoricoMovimentacao(usuariologado).setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnVoltar1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -302,28 +434,29 @@ public class TelaMovimentacaoEstoque extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new TelaMovimentacaoEstoque().setVisible(true);
+                //  new TelaMovimentacaoEstoque().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnSalvar;
+    private javax.swing.JTable TabelaEstoque;
+    private javax.swing.JButton btnRegistrar;
     private javax.swing.JButton btnVoltar;
+    private javax.swing.JButton btnVoltar1;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTable jTable3;
     private javax.swing.JLabel lblDescricao;
     private javax.swing.JLabel lblNome;
     private javax.swing.JLabel lblNome1;
     private javax.swing.JLabel lblTexto;
     private javax.swing.JLabel lblTipo;
-    private javax.swing.JTextField txtNome;
-    private javax.swing.JTextField txtNome1;
-    private javax.swing.JTextField txtTelefone;
+    private javax.swing.JRadioButton rbEntrada;
+    private javax.swing.JRadioButton rbSaida;
+    private javax.swing.JTextField txtFornecedor;
+    private javax.swing.JTextField txtProduto;
+    private javax.swing.JTextField txtQuantidade;
     // End of variables declaration//GEN-END:variables
 }

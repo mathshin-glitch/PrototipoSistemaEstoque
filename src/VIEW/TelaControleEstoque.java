@@ -4,17 +4,36 @@
  */
 package VIEW;
 
-/**
- *
- * @author mello
- */
+import classes.PermissaoUtil;
+import conexao.Conexao;
+import java.sql.Connection;
+import classes.Usuario;
+
 public class TelaControleEstoque extends javax.swing.JFrame {
 
-    /**
-     * Creates new form TelaControleEstoque
-     */
-    public TelaControleEstoque() {
+    private Conexao conexao;
+    private Connection conn;
+    private Usuario usuariologado;
+
+    public TelaControleEstoque(Usuario usuario) {
         initComponents();
+        conexao = new Conexao();
+        conn = conexao.Conectar();
+        this.usuariologado = usuario;
+
+        // Definindo as ações dos botões
+        btnCadastrarFornecedor.setActionCommand("CADASTRAR_FORNECEDOR");
+        btnCadastrarProduto.setActionCommand("CADASTRAR_PRODUTO");
+        btnListarProdutos.setActionCommand("LISTAR_PRODUTOS");
+
+
+        // Aplica permissões
+        PermissaoUtil.aplicarPermissoes(usuariologado,
+                btnCadastrarFornecedor,
+                btnCadastrarProduto,
+                btnListarProdutos,
+                btnMovimentarEstoque
+        );
     }
 
     /**
@@ -29,14 +48,15 @@ public class TelaControleEstoque extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        btnCadastrarUsuario = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
-        btnCadastrar = new javax.swing.JButton();
-        btnProduto = new javax.swing.JButton();
-        btnEstoque = new javax.swing.JButton();
+        btnCadastrarFornecedor = new javax.swing.JButton();
+        btnCadastrarProduto = new javax.swing.JButton();
+        btnMovimentarEstoque = new javax.swing.JButton();
         lblCadastrar = new javax.swing.JLabel();
         lblProduto = new javax.swing.JLabel();
         lblEstoque = new javax.swing.JLabel();
-        btnLista = new javax.swing.JButton();
+        btnListarProdutos = new javax.swing.JButton();
         lblTexto = new javax.swing.JLabel();
         lblTexto2 = new javax.swing.JLabel();
         lblTexto3 = new javax.swing.JLabel();
@@ -52,6 +72,16 @@ public class TelaControleEstoque extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Controle de Estoque");
 
+        btnCadastrarUsuario.setBackground(new java.awt.Color(255, 255, 255));
+        btnCadastrarUsuario.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnCadastrarUsuario.setForeground(new java.awt.Color(51, 0, 102));
+        btnCadastrarUsuario.setText("Cadastrar Usuario");
+        btnCadastrarUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCadastrarUsuarioActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -59,40 +89,44 @@ public class TelaControleEstoque extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(16, 16, 16)
                 .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnCadastrarUsuario)
+                .addGap(21, 21, 21))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(15, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(16, 16, 16))
+                .addContainerGap(14, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(btnCadastrarUsuario))
+                .addGap(13, 13, 13))
         );
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
-        btnCadastrar.setBackground(new java.awt.Color(218, 255, 255));
-        btnCadastrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/Cadastrar Fornecedores.png"))); // NOI18N
-        btnCadastrar.addActionListener(new java.awt.event.ActionListener() {
+        btnCadastrarFornecedor.setBackground(new java.awt.Color(218, 255, 255));
+        btnCadastrarFornecedor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/Cadastrar Fornecedores.png"))); // NOI18N
+        btnCadastrarFornecedor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCadastrarActionPerformed(evt);
+                btnCadastrarFornecedorActionPerformed(evt);
             }
         });
 
-        btnProduto.setBackground(new java.awt.Color(218, 255, 255));
-        btnProduto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/CadastrarProduto.png"))); // NOI18N
-        btnProduto.setDefaultCapable(false);
-        btnProduto.addActionListener(new java.awt.event.ActionListener() {
+        btnCadastrarProduto.setBackground(new java.awt.Color(218, 255, 255));
+        btnCadastrarProduto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/CadastrarProduto.png"))); // NOI18N
+        btnCadastrarProduto.setDefaultCapable(false);
+        btnCadastrarProduto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnProdutoActionPerformed(evt);
+                btnCadastrarProdutoActionPerformed(evt);
             }
         });
 
-        btnEstoque.setBackground(new java.awt.Color(218, 255, 255));
-        btnEstoque.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/MovimentacaoEstoque.png"))); // NOI18N
-        btnEstoque.addActionListener(new java.awt.event.ActionListener() {
+        btnMovimentarEstoque.setBackground(new java.awt.Color(218, 255, 255));
+        btnMovimentarEstoque.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/MovimentacaoEstoque.png"))); // NOI18N
+        btnMovimentarEstoque.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEstoqueActionPerformed(evt);
+                btnMovimentarEstoqueActionPerformed(evt);
             }
         });
 
@@ -102,11 +136,11 @@ public class TelaControleEstoque extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(33, 33, 33)
-                .addComponent(btnCadastrar)
+                .addComponent(btnCadastrarFornecedor)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnProduto)
-                .addGap(97, 97, 97)
-                .addComponent(btnEstoque)
+                .addComponent(btnCadastrarProduto)
+                .addGap(89, 89, 89)
+                .addComponent(btnMovimentarEstoque)
                 .addGap(35, 35, 35))
         );
         jPanel3Layout.setVerticalGroup(
@@ -114,27 +148,30 @@ public class TelaControleEstoque extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnEstoque)
-                    .addComponent(btnProduto)
-                    .addComponent(btnCadastrar))
+                    .addComponent(btnMovimentarEstoque)
+                    .addComponent(btnCadastrarProduto)
+                    .addComponent(btnCadastrarFornecedor))
                 .addContainerGap())
         );
 
+        lblCadastrar.setForeground(new java.awt.Color(0, 0, 0));
         lblCadastrar.setText("Cadastrar Fornecedores");
 
+        lblProduto.setForeground(new java.awt.Color(0, 0, 0));
         lblProduto.setText("Cadastrar Produto");
 
+        lblEstoque.setForeground(new java.awt.Color(0, 0, 0));
         lblEstoque.setText("Movimentação do Estoque");
 
-        btnLista.setBackground(new java.awt.Color(102, 51, 255));
-        btnLista.setFont(new java.awt.Font("Segoe UI", 0, 28)); // NOI18N
-        btnLista.setForeground(new java.awt.Color(255, 255, 255));
-        btnLista.setText("Lista de Produtos");
-        btnLista.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        btnLista.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnLista.addActionListener(new java.awt.event.ActionListener() {
+        btnListarProdutos.setBackground(new java.awt.Color(102, 51, 255));
+        btnListarProdutos.setFont(new java.awt.Font("Segoe UI", 0, 28)); // NOI18N
+        btnListarProdutos.setForeground(new java.awt.Color(255, 255, 255));
+        btnListarProdutos.setText("Lista de Produtos");
+        btnListarProdutos.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnListarProdutos.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnListarProdutos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnListaActionPerformed(evt);
+                btnListarProdutosActionPerformed(evt);
             }
         });
 
@@ -160,7 +197,7 @@ public class TelaControleEstoque extends javax.swing.JFrame {
                         .addComponent(lblCadastrar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(lblProduto)
-                        .addGap(88, 88, 88)
+                        .addGap(94, 94, 94)
                         .addComponent(lblEstoque)
                         .addGap(15, 15, 15)))
                 .addContainerGap())
@@ -168,13 +205,13 @@ public class TelaControleEstoque extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(40, 40, 40)
-                        .addComponent(btnLista, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(btnListarProdutos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(48, 48, 48)
                         .addComponent(lblTexto)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 115, Short.MAX_VALUE)
+                        .addGap(105, 105, 105)
                         .addComponent(lblTexto2)
-                        .addGap(102, 102, 102)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 112, Short.MAX_VALUE)
                         .addComponent(lblTexto3)))
                 .addGap(40, 40, 40))
         );
@@ -195,7 +232,7 @@ public class TelaControleEstoque extends javax.swing.JFrame {
                     .addComponent(lblTexto3)
                     .addComponent(lblTexto))
                 .addGap(18, 21, Short.MAX_VALUE)
-                .addComponent(btnLista, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnListarProdutos, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(32, 32, 32))
         );
 
@@ -214,25 +251,30 @@ public class TelaControleEstoque extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnListaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListaActionPerformed
-        new TelaListaProdutos().setVisible(true);
+    private void btnListarProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListarProdutosActionPerformed
+        new TelaListaProdutos(usuariologado).setVisible(true);
         this.dispose();
-    }//GEN-LAST:event_btnListaActionPerformed
+    }//GEN-LAST:event_btnListarProdutosActionPerformed
 
-    private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
-        new TelaCadastrarFornecedor().setVisible(true);
+    private void btnCadastrarFornecedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarFornecedorActionPerformed
+        new TelaCadastrarFornecedor(usuariologado).setVisible(true);
         this.dispose();
-    }//GEN-LAST:event_btnCadastrarActionPerformed
+    }//GEN-LAST:event_btnCadastrarFornecedorActionPerformed
 
-    private void btnProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProdutoActionPerformed
-        new TelaCadastrarProdutos().setVisible(true);
+    private void btnCadastrarProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarProdutoActionPerformed
+        new TelaCadastrarProdutos(usuariologado).setVisible(true);
         this.dispose();
-    }//GEN-LAST:event_btnProdutoActionPerformed
+    }//GEN-LAST:event_btnCadastrarProdutoActionPerformed
 
-    private void btnEstoqueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEstoqueActionPerformed
-        new TelaMovimentacaoEstoque().setVisible(true);
+    private void btnMovimentarEstoqueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMovimentarEstoqueActionPerformed
+        new TelaMovimentacaoEstoque(usuariologado).setVisible(true);
         this.dispose();
-    }//GEN-LAST:event_btnEstoqueActionPerformed
+    }//GEN-LAST:event_btnMovimentarEstoqueActionPerformed
+
+    private void btnCadastrarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarUsuarioActionPerformed
+        new TelaCadastrarUsuarios(usuariologado).setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnCadastrarUsuarioActionPerformed
 
     /**
      * @param args the command line arguments
@@ -264,16 +306,17 @@ public class TelaControleEstoque extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new TelaControleEstoque().setVisible(true);
+                //new TelaControleEstoque().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnCadastrar;
-    private javax.swing.JButton btnEstoque;
-    private javax.swing.JButton btnLista;
-    private javax.swing.JButton btnProduto;
+    private javax.swing.JButton btnCadastrarFornecedor;
+    private javax.swing.JButton btnCadastrarProduto;
+    private javax.swing.JButton btnCadastrarUsuario;
+    private javax.swing.JButton btnListarProdutos;
+    private javax.swing.JButton btnMovimentarEstoque;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

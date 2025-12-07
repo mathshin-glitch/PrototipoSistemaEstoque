@@ -59,7 +59,7 @@
                       <Component id="lblDescricao" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="lblFornecedor" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="txtDescricao" alignment="0" pref="225" max="32767" attributes="0"/>
-                      <Component id="cbxFornecedor" alignment="0" max="32767" attributes="0"/>
+                      <Component id="comboFornecedor" alignment="0" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
               </Group>
@@ -100,7 +100,7 @@
                           <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
                           <Component id="lblFornecedor" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="cbxFornecedor" min="-2" max="-2" attributes="0"/>
+                          <Component id="comboFornecedor" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace pref="50" max="32767" attributes="0"/>
@@ -215,18 +215,14 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCadastrarActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JComboBox" name="cbxFornecedor">
+        <Component class="javax.swing.JComboBox" name="comboFornecedor">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Segoe UI" size="12" style="1"/>
             </Property>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="5">
+              <StringArray count="1">
                 <StringItem index="0" value="Selecione o Fornecedor"/>
-                <StringItem index="1" value="Mercado Livre"/>
-                <StringItem index="2" value="Amazon"/>
-                <StringItem index="3" value="Shopee"/>
-                <StringItem index="4" value="Carrefour"/>
               </StringArray>
             </Property>
             <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
@@ -234,8 +230,11 @@
             </Property>
             <Property name="name" type="java.lang.String" value="" noResource="true"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="comboFornecedorActionPerformed"/>
+          </Events>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Object&gt;"/>
           </AuxValues>
         </Component>
       </SubComponents>
