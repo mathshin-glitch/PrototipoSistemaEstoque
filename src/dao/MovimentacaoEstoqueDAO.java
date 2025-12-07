@@ -22,8 +22,8 @@ public class MovimentacaoEstoqueDAO {
     private Connection conn;
 
     public MovimentacaoEstoqueDAO() {
-        this.conexao = new Conexao();
-        this.conn = conexao.getConexao();
+        conexao = new Conexao();
+        conn = conexao.Conectar();
     }
 
     //Método da para Mostrar o Historico de Movimentação de Estoque

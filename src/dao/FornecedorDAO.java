@@ -20,8 +20,8 @@ public class FornecedorDAO {
     private Conexao conexao; // pega o metodo getConexao,
 
     public FornecedorDAO() {
-        this.conexao = new Conexao();
-        this.conn = conexao.getConexao();
+        conexao = new Conexao();
+        conn = conexao.Conectar();
     }
 
     PreparedStatement stmt; // objeto capaz de fazer consultas SQL

@@ -4,6 +4,16 @@
  */
 package dao;
 
+import classes.Produto;
+import conexao.Conexao;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
 import conexao.Conexao;
 import classes.Produto;
 import java.sql.Connection;
@@ -20,13 +30,14 @@ public class ProdutoDAO {
     private Connection conn;
 
     public ProdutoDAO() {
-        this.conexao = new Conexao(); // cria a classe conexao
-        this.conn = conexao.getConexao(); // pega o metodo de conexao
+        conexao = new Conexao(); // cria a classe conexao
+        conn = conexao.Conectar(); // pega o metodo de conexao
     }
 
     PreparedStatement stmt; // capaz de fazer consul SQL
     ResultSet rs; // retorna os dados do banco
 
+    //Metodo para inserir produto no banco
     //Metodo para inserir produto no banco
     public int inserir(Produto p) {
         int status;

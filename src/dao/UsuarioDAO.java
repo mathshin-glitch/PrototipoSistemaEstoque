@@ -9,13 +9,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class UsuarioDAO {
-
+    
+    private Conexao conexao;
     private Connection conn;
     private PreparedStatement st;
     private ResultSet rs;
 
     public UsuarioDAO() {
-        this.conn = new Conexao().getConexao();
+       conexao = new Conexao();
+       conn = conexao.Conectar();
     }
 
     //Método para cadastrar novo usuario

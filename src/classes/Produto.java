@@ -1,11 +1,19 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package classes;
 
+/**
+ *
+ * @author mello
+ */
 public class Produto {
-    
-    private int id;
-    private String nome;
-    private String descricao;
-    private int quantidade;
+
+        private int id;
+        private String nome;
+        private String descricao;
+        private int quantidade;
 
     public Produto() {
     }
@@ -48,6 +56,6 @@ public class Produto {
     public void setQuantidade(int quantidade) {
         this.quantidade = quantidade;
     }
+
     
-    
-}
+    }

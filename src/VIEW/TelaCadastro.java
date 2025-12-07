@@ -4,16 +4,15 @@
  */
 package VIEW;
 
+import classes.Usuario;
+import dao.UsuarioDAO;
 import javax.swing.JOptionPane;
-
 
 public class TelaCadastro extends javax.swing.JFrame {
 
     public TelaCadastro() {
         initComponents();
     }
-
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -27,10 +26,10 @@ public class TelaCadastro extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         lblEmail = new javax.swing.JLabel();
         txtEmail = new javax.swing.JTextField();
-        txtSenha = new javax.swing.JTextField();
         lblSenha = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         btnEntrar = new javax.swing.JButton();
+        txtSenha = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -79,8 +78,8 @@ public class TelaCadastro extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(lblSenha)
                                 .addComponent(lblEmail)
-                                .addComponent(txtEmail)
-                                .addComponent(txtSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 399, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(txtEmail, javax.swing.GroupLayout.DEFAULT_SIZE, 399, Short.MAX_VALUE)
+                                .addComponent(txtSenha)))
                         .addGap(68, 68, 68))))
         );
         jPanel1Layout.setVerticalGroup(
@@ -96,9 +95,9 @@ public class TelaCadastro extends javax.swing.JFrame {
                 .addComponent(lblSenha)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(24, 24, 24)
                 .addComponent(btnEntrar, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(49, Short.MAX_VALUE))
+                .addContainerGap(43, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -121,21 +120,37 @@ public class TelaCadastro extends javax.swing.JFrame {
     }//GEN-LAST:event_txtEmailActionPerformed
 
     private void btnEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntrarActionPerformed
-        String nome = txtEmail.getText();
-        String senha = txtSenha.getText();
-        
-        if(txtEmail.getText().isEmpty() || txtSenha.getText().isEmpty()){
-            JOptionPane.showMessageDialog(null,"Todos os campos precisam ser preenchidos","Erro ao Logar",JOptionPane.INFORMATION_MESSAGE);
+        String login = txtEmail.getText().trim();
+        String senha = new String(txtSenha.getPassword());
+
+        if (login.isEmpty() || senha.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Preencha todos os campos!");
             return;
         }
-        
-        String validacao = senha;
-        if(validacao.length() > 6){
-            new TelaControleEstoque().setVisible(true);
-            this.dispose();
-        }else{
-            JOptionPane.showMessageDialog(null,"Sua senha deve ser maior que 6 caracteres","Erro ao Logar",JOptionPane.INFORMATION_MESSAGE);
+
+        UsuarioDAO dao = new UsuarioDAO();
+        Usuario usuario = dao.buscarPorLogin(login);
+
+        if (usuario == null) {
+            JOptionPane.showMessageDialog(null, "Usuário não encontrado!");
+            return;
         }
+
+        boolean senhaCorreta = dao.verificarSenha(usuario, senha);
+
+        if (!senhaCorreta) {
+            JOptionPane.showMessageDialog(null, "Senha incorreta!");
+            return;
+        }
+
+        // Login OK
+        JOptionPane.showMessageDialog(null, "Login realizado com sucesso!");
+
+        Usuario user = dao.login(login, senha);
+
+        TelaControleEstoque tela = new TelaControleEstoque(user);
+        tela.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnEntrarActionPerformed
 
     /**
@@ -188,6 +203,6 @@ public class TelaCadastro extends javax.swing.JFrame {
     private javax.swing.JLabel lblEmail;
     private javax.swing.JLabel lblSenha;
     private javax.swing.JTextField txtEmail;
-    private javax.swing.JTextField txtSenha;
+    private javax.swing.JPasswordField txtSenha;
     // End of variables declaration//GEN-END:variables
 }

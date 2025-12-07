@@ -4,21 +4,39 @@
  */
 package VIEW;
 
-import Modelo.ListaProduto;
-import Modelo.Produto;
+import classes.Fornecedor;
+import classes.PermissaoUtil;
+import dao.FornecedorDAO;
+import java.util.List;
 import javax.swing.JOptionPane;
+import java.sql.Connection;
+import classes.Usuario;
+import classes.Produto;
+import conexao.Conexao;
+import dao.Fornecedor_ProdutoDAO;
 
-/**
- *
- * @author mello
- */
+import dao.ProdutoDAO;
+
 public class TelaCadastrarProdutos extends javax.swing.JFrame {
 
-    /**
-     * Creates new form TelaCadastrarProdutos
-     */
-    public TelaCadastrarProdutos() {
+    private Conexao conexao;
+    private Connection conn;
+    private Usuario usuariologado;
+
+    public TelaCadastrarProdutos(Usuario usuario) {
         initComponents();
+        conexao = new Conexao();
+        conn = conexao.Conectar();
+        this.usuariologado = usuario;
+        FornecedorDAO dao = new FornecedorDAO();
+        List<Fornecedor> fornecedores = dao.listarTodos();
+
+        for (Fornecedor f : fornecedores) {
+            comboFornecedor.addItem(f); // comboFornecedor =e o Jcombox
+        }
+
+        btnCadastrar.setActionCommand("CADASTRAR_PRODUTO");
+        PermissaoUtil.aplicarPermissoes(usuario, btnCadastrar);
     }
 
     /**
@@ -41,7 +59,7 @@ public class TelaCadastrarProdutos extends javax.swing.JFrame {
         lblQuantidade = new javax.swing.JLabel();
         lblVoltar = new javax.swing.JButton();
         btnCadastrar = new javax.swing.JButton();
-        cbxFornecedor = new javax.swing.JComboBox<>();
+        comboFornecedor = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(630, 422));
@@ -100,10 +118,15 @@ public class TelaCadastrarProdutos extends javax.swing.JFrame {
             }
         });
 
-        cbxFornecedor.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        cbxFornecedor.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione o Fornecedor", "Mercado Livre", "Amazon", "Shopee", "Carrefour" }));
-        cbxFornecedor.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        cbxFornecedor.setName(""); // NOI18N
+        comboFornecedor.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        comboFornecedor.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione o Fornecedor" }));
+        comboFornecedor.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        comboFornecedor.setName(""); // NOI18N
+        comboFornecedor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboFornecedorActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -121,7 +144,7 @@ public class TelaCadastrarProdutos extends javax.swing.JFrame {
                     .addComponent(lblDescricao)
                     .addComponent(lblFornecedor)
                     .addComponent(txtDescricao, javax.swing.GroupLayout.DEFAULT_SIZE, 225, Short.MAX_VALUE)
-                    .addComponent(cbxFornecedor, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(comboFornecedor, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(47, 47, 47))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(55, 55, 55)
@@ -156,7 +179,7 @@ public class TelaCadastrarProdutos extends javax.swing.JFrame {
                         .addGap(27, 27, 27)
                         .addComponent(lblFornecedor)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cbxFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(comboFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblVoltar, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -188,48 +211,54 @@ public class TelaCadastrarProdutos extends javax.swing.JFrame {
     }//GEN-LAST:event_txtNomeActionPerformed
 
     private void lblVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lblVoltarActionPerformed
-        new TelaControleEstoque().setVisible(true);
+        new TelaControleEstoque(usuariologado).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_lblVoltarActionPerformed
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
-        String nome = txtNome.getText();
-        String descricao = txtDescricao.getText();
+        Produto p = new Produto();
+        ProdutoDAO dao = new ProdutoDAO();
+        int resposta;
 
-        if (nome.isEmpty() || descricao.isEmpty() || txtQuantidade.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Preencha todos os campos");
+        //Todos os campos precisam estar preenchidos
+        if (txtNome.getText().isEmpty() || txtDescricao.getText().isEmpty() || txtQuantidade.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Todos os campos precisam ser preenchidos");
+            return;
+        }
+        //se o fornecedor não for selecionado
+        if (comboFornecedor.getSelectedIndex() <= 0) {
+            JOptionPane.showMessageDialog(null, "Selecione um fornecedor");
             return;
         }
 
-        try {
-            int Validquantidade = Integer.parseInt(txtQuantidade.getText());
+        //Pega os dados digitado e coloca no objeto produto
+        p.setNome(txtNome.getText());
+        p.setDescricao(txtDescricao.getText());
+        p.setQuantidade(Integer.parseInt(txtQuantidade.getText()));
 
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Quantidade precisar ser numeros inteiros");
-            return;
-        }
+        // Recupera o fornecedor selecionado no comboBox
+        Fornecedor fornecedorSelecionado = (Fornecedor) comboFornecedor.getSelectedItem();
 
-        if (cbxFornecedor.getSelectedIndex() == 0) {
-            JOptionPane.showMessageDialog(this, "Selecione um Fornecedor");
-            return;
+        resposta = dao.inserir(p);
+        if (resposta > 0) {
+
+            // Cria o vínculo entre fornecedor e produto
+            Fornecedor_ProdutoDAO fpDao = new Fornecedor_ProdutoDAO();
+            fpDao.Vincular(fornecedorSelecionado.getId(), resposta); // a (resposta) está armazenando o ID do produto
+
+            JOptionPane.showMessageDialog(null, "Produto Cadastrado com sucesso");
+            txtNome.setText("");
+            txtDescricao.setText("");
+            txtQuantidade.setText("");
+            txtNome.requestFocus();
         } else {
-            String Validfornecedor = cbxFornecedor.getSelectedItem().toString();
+            JOptionPane.showMessageDialog(null, "Erro ao inserir produto");
         }
-
-        int quantidade = Integer.parseInt(txtQuantidade.getText());
-        String fornecedor = cbxFornecedor.getSelectedItem().toString();
-        Produto p = new Produto(nome, descricao, quantidade, fornecedor);
-
-        ListaProduto.AdiconarProduto(p);
-        
-        JOptionPane.showMessageDialog(null,"Produto Cadastrado com sucesso");
-        txtNome.setText("");
-        txtDescricao.setText("");
-        txtQuantidade.setText("");
-        cbxFornecedor.setSelectedIndex(0);
-        
-
     }//GEN-LAST:event_btnCadastrarActionPerformed
+
+    private void comboFornecedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboFornecedorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comboFornecedorActionPerformed
 
     /**
      * @param args the command line arguments
@@ -261,14 +290,14 @@ public class TelaCadastrarProdutos extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new TelaCadastrarProdutos().setVisible(true);
+                // new TelaCadastrarProdutos().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCadastrar;
-    private javax.swing.JComboBox<String> cbxFornecedor;
+    private javax.swing.JComboBox<Object> comboFornecedor;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblDescricao;
     private javax.swing.JLabel lblFornecedor;

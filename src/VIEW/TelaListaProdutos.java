@@ -9,39 +9,35 @@ import Modelo.Produto;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import java.sql.Connection;
+import classes.Usuario;
+import conexao.Conexao;
+import dao.ProdutoDAO;
+import java.util.List;
+import javax.swing.table.TableRowSorter;
 
-/**
- *
- * @author mello/
- */
 public class TelaListaProdutos extends javax.swing.JFrame {
 
-    /**
-     * Creates new form TelaListaProdutos
-     */
-    public TelaListaProdutos() {
+    private Conexao conexao;
+    private Connection conn;
+    private Usuario usuariologado;
+
+    public TelaListaProdutos(Usuario usuario) {
         initComponents();
-        InicioTabela();
+        conexao = new Conexao();
+        conn = conexao.Conectar();
+        this.usuariologado = usuario;
+        ProdutoDAO dao = new ProdutoDAO();
+        carregarTabela(dao.buscarProdutosComFornecedor(""));
     }
 
-    DefaultTableModel modeloTabela;
+    private void carregarTabela(List<Object[]> lista) {
+        DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+        jTable1.setRowSorter(new TableRowSorter<>(modelo));
+        modelo.setRowCount(0); // limpa a tabela antes
 
-    public void InicioTabela() {
-        modeloTabela = new DefaultTableModel(
-                new Object[]{"Nome", "Descrição", "Quantidade", "Fornecedor"}, 0);
-        jTable1.setModel(modeloTabela);
-        atualizarTabela();
-    }
-
-    public void atualizarTabela() {
-        modeloTabela.setNumRows(0);
-        for (Produto p : ListaProduto.getProduto()) {
-            modeloTabela.addRow(new Object[]{
-                p.getNome(),
-                p.getDescricao(),
-                p.getQuantidade(),
-                p.getFornecedor()
-            });
+        for (Object[] linha : lista) {
+            modelo.addRow(linha);
         }
     }
 
@@ -60,7 +56,7 @@ public class TelaListaProdutos extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
-        txtNome = new javax.swing.JTextField();
+        txtBuscar = new javax.swing.JTextField();
         btnPesquisar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -101,9 +97,9 @@ public class TelaListaProdutos extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setText("Buscar");
 
-        txtNome.addActionListener(new java.awt.event.ActionListener() {
+        txtBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNomeActionPerformed(evt);
+                txtBuscarActionPerformed(evt);
             }
         });
 
@@ -130,7 +126,7 @@ public class TelaListaProdutos extends javax.swing.JFrame {
                         .addGap(21, 21, 21)
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -152,7 +148,7 @@ public class TelaListaProdutos extends javax.swing.JFrame {
                 .addGap(27, 27, 27)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnPesquisar))
                 .addGap(24, 24, 24)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -176,18 +172,24 @@ public class TelaListaProdutos extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNomeActionPerformed
+    private void txtBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscarActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtNomeActionPerformed
+    }//GEN-LAST:event_txtBuscarActionPerformed
 
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
-        new TelaControleEstoque().setVisible(true);
+        new TelaControleEstoque(usuariologado).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnVoltarActionPerformed
 
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
-        JOptionPane.showMessageDialog(null, "Essa Função só estara disponivel na proxima Versão projeto com o banco de dados");
-        txtNome.setText("");
+        String filtro = txtBuscar.getText().trim();
+        ProdutoDAO dao = new ProdutoDAO();
+
+        if (filtro.isEmpty()) {
+            carregarTabela(dao.buscarProdutosComFornecedor(""));
+        } else {
+            carregarTabela(dao.buscarProdutosComFornecedor(filtro));
+        }
     }//GEN-LAST:event_btnPesquisarActionPerformed
 
     /**
@@ -220,7 +222,7 @@ public class TelaListaProdutos extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new TelaListaProdutos().setVisible(true);
+                // new TelaListaProdutos().setVisible(true);
             }
         });
     }
@@ -233,6 +235,6 @@ public class TelaListaProdutos extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JLabel lblTexto;
-    private javax.swing.JTextField txtNome;
+    private javax.swing.JTextField txtBuscar;
     // End of variables declaration//GEN-END:variables
 }

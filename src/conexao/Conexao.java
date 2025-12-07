@@ -6,32 +6,42 @@ import java.sql.SQLException;
 
 public class Conexao {
 
-    public String url = "jdbc:mysql://localhost:3306/controle_estoque";
-    public String user = "root";
-    public String password = "taticodobem@357";
+ // Dados de conexão
+    private final String url = "jdbc:mysql://localhost:3306/controle_estoque";
+    private final String user = "root";
+    private final String password = "taticodobem@357";
 
-    private Connection conn; //conexão armazenada aqui
+    private Connection conn; // Guarda a conexão ativa
 
-    public Connection getConexao() {
+    public Connection Conectar() {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection(url, user, password);
-            System.out.println("Conexão com o banco funcionando");
-            return conn;
-        } catch (SQLException | ClassNotFoundException ex) {
-            System.out.println("Erro de conexão com o banco: " + ex.getMessage());
+            // Abre conexão apenas se não existir ou estiver fechada
+            if (conn == null || conn.isClosed()) {
+                conn = DriverManager.getConnection(url, user, password);
+                System.out.println("Conexão com o banco funcionando");
+            }
+        } catch (SQLException ex) {
+            System.out.println("Erro ao conectar com o banco");
             return null;
         }
+        return conn;
     }
 
     public void desconectar() {
         try {
+            // Fecha conexão se estiver aberta
             if (conn != null && !conn.isClosed()) {
                 conn.close();
-                System.out.println("Conexão desconectada");
+                System.out.println("Conexão encerrada");
             }
         } catch (SQLException ex) {
-            System.out.println("Erro ao desconectar conexão: " + ex.getMessage());
+            System.out.println("Erro ao desconectar: " + ex.getMessage());
         }
     }
+
+    // Retorna a conexão atual
+    public Connection getConnection() {
+        return conn;
+    }
+
 }

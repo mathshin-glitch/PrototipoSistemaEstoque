@@ -11,8 +11,8 @@ public class Fornecedor_ProdutoDAO {
     private Connection conn;
 
     public Fornecedor_ProdutoDAO() {
-        this.conexao = new Conexao();
-        this.conn = conexao.getConexao();
+        conexao = new Conexao();
+        conn = conexao.Conectar();
     }
 
     PreparedStatement stmt; // capaz de inserir dados sql
