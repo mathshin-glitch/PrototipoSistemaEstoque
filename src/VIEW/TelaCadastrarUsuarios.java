@@ -79,6 +79,7 @@ public class TelaCadastrarUsuarios extends javax.swing.JFrame {
 
         btnVoltar.setBackground(new java.awt.Color(102, 51, 255));
         btnVoltar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnVoltar.setForeground(new java.awt.Color(255, 255, 255));
         btnVoltar.setText("Voltar");
         btnVoltar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -88,6 +89,7 @@ public class TelaCadastrarUsuarios extends javax.swing.JFrame {
 
         btnCadastrar.setBackground(new java.awt.Color(102, 51, 255));
         btnCadastrar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnCadastrar.setForeground(new java.awt.Color(255, 255, 255));
         btnCadastrar.setText("Cadastrar");
         btnCadastrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

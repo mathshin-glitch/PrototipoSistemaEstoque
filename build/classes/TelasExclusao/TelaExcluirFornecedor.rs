@@ -1,0 +1,4 @@
+VIEW.TelaExcluirFornecedor$2
+VIEW.TelaExcluirFornecedor$3
+VIEW.TelaExcluirFornecedor$1
+VIEW.TelaExcluirFornecedor
