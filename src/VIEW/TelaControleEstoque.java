@@ -25,7 +25,7 @@ public class TelaControleEstoque extends javax.swing.JFrame {
         btnCadastrarFornecedor.setActionCommand("CADASTRAR_FORNECEDOR");
         btnCadastrarProduto.setActionCommand("CADASTRAR_PRODUTO");
         btnListarProdutos.setActionCommand("LISTAR_PRODUTOS");
-        btnMovimentarEstoque.setActionCommand("MOVIMENTAR_ESTOQUE");
+
 
         // Aplica permissões
         PermissaoUtil.aplicarPermissoes(usuariologado,
@@ -139,7 +139,7 @@ public class TelaControleEstoque extends javax.swing.JFrame {
                 .addComponent(btnCadastrarFornecedor)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnCadastrarProduto)
-                .addGap(97, 97, 97)
+                .addGap(89, 89, 89)
                 .addComponent(btnMovimentarEstoque)
                 .addGap(35, 35, 35))
         );
@@ -154,10 +154,13 @@ public class TelaControleEstoque extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        lblCadastrar.setForeground(new java.awt.Color(0, 0, 0));
         lblCadastrar.setText("Cadastrar Fornecedores");
 
+        lblProduto.setForeground(new java.awt.Color(0, 0, 0));
         lblProduto.setText("Cadastrar Produto");
 
+        lblEstoque.setForeground(new java.awt.Color(0, 0, 0));
         lblEstoque.setText("Movimentação do Estoque");
 
         btnListarProdutos.setBackground(new java.awt.Color(102, 51, 255));
@@ -192,9 +195,9 @@ public class TelaControleEstoque extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(32, 32, 32)
                         .addComponent(lblCadastrar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 127, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(lblProduto)
-                        .addGap(88, 88, 88)
+                        .addGap(94, 94, 94)
                         .addComponent(lblEstoque)
                         .addGap(15, 15, 15)))
                 .addContainerGap())
@@ -208,7 +211,7 @@ public class TelaControleEstoque extends javax.swing.JFrame {
                         .addComponent(lblTexto)
                         .addGap(105, 105, 105)
                         .addComponent(lblTexto2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 112, Short.MAX_VALUE)
                         .addComponent(lblTexto3)))
                 .addGap(40, 40, 40))
         );

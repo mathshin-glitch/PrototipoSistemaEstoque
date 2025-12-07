@@ -97,4 +97,44 @@ public class ProdutoDAO {
         // Método COM filtro (para busca)
 
     }
+
+    //Método para excluir Produto do banco
+    public void excluir(int id) {
+        try {
+            String sql = "DELETE FROM produto WHERE id = ?";
+            PreparedStatement st = conn.prepareStatement(sql);
+            st.setInt(1, id);
+            st.executeUpdate();
+            st.close();
+
+            System.out.println("Produto excluído com sucesso!");
+
+        } catch (SQLException e) {
+            System.out.println("Erro ao excluir produto: " + e.getMessage());
+        }
+    }
+
+    //Método para Prencher Lista ID e Nome do Produto
+    public List<Produto> listaNomeID(String nome) {
+        try {
+            String sql = "SELECT id,nome FROM produto WHERE nome LIKE ?";
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, "%" + nome + "%");
+
+            List<Produto> lista = new ArrayList<>();
+
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Produto p = new Produto();
+                p.setId(rs.getInt("id"));
+                p.setNome(rs.getString("nome"));
+                lista.add(p);
+            }
+            return lista;
+        } catch (SQLException ex) {
+            System.out.println("Erro ao Retornda dados de Produtos: " + ex.getMessage());
+            return null;
+        }
+    }
 }

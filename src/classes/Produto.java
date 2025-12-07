@@ -10,10 +10,10 @@ package classes;
  */
 public class Produto {
 
-        private int id;
-        private String nome;
-        private String descricao;
-        private int quantidade;
+    private int id;
+    private String nome;
+    private String descricao;
+    private int quantidade;
 
     public Produto() {
     }
@@ -57,5 +57,4 @@ public class Produto {
         this.quantidade = quantidade;
     }
 
-    
-    }
+}

@@ -68,4 +68,43 @@ public class FornecedorDAO {
         }
     }
 
+    public void excluir(int id) {
+        try {
+            String sql = "DELETE FROM fornecedor WHERE id = ?";
+            PreparedStatement st = conn.prepareStatement(sql);
+            st.setInt(1, id);
+            st.executeUpdate();
+            st.close();
+
+            System.out.println("Fornecedor excluído com sucesso!");
+
+        } catch (SQLException e) {
+            System.out.println("Erro ao excluir fornecedor: " + e.getMessage());
+        }
+    }
+    
+        //Método para Prencher Lista ID e Nome do Fornecedor
+    public List<Fornecedor> listaNomeID(String nome) {
+        try {
+            String sql = "SELECT id,nome FROM fornecedor WHERE nome LIKE ?";
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, "%" + nome + "%");
+
+            List<Fornecedor> lista = new ArrayList<>();
+
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Fornecedor f = new Fornecedor();
+                f.setId(rs.getInt("id"));
+                f.setNome(rs.getString("nome"));
+                lista.add(f);
+            }
+            return lista;
+        } catch (SQLException ex) {
+            System.out.println("Erro ao Retornda dados de Fornecedor: " + ex.getMessage());
+            return null;
+        }
+    }
+
 }
