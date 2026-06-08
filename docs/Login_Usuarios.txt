@@ -1,0 +1,7 @@
+Login das contas:
+
+Login: admin Senha : 123
+Login: operador Senha : 123
+Login: user Senha : 123
+
+(Todas as senhas são iguais)

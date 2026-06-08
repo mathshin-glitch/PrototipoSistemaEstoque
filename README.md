@@ -1,48 +1,113 @@
-# Sistema de Controle de Estoque  
-Projeto Integrador – Etapa 5  
+# Sistema de Controle de Estoque
 
-## 📌 Status do Projeto  
-**Em desenvolvimento**
+## Sobre o Projeto
 
-## 🛠 Tecnologias Utilizadas  
-Este projeto utiliza apenas tecnologias vistas no curso:  
-- **Java (JDK)**  
-- **Interface gráfica com Swing**  
-- **MySQL**  
-- **JDBC (Driver de conexão)**  
-- **Git e GitHub**
+Este projeto foi desenvolvido durante o curso Técnico em Desenvolvimento de Software do Senac como parte das atividades práticas e do Projeto Integrador.
 
-## 👨‍💻 Time de Desenvolvimento  
-- **Matheus Silva Melo**
+O sistema tem como objetivo auxiliar no controle de estoque, permitindo o cadastro e a consulta de produtos e fornecedores, além do registro de movimentações de estoque. Os dados são armazenados em um banco de dados MySQL e acessados por meio de uma aplicação desktop desenvolvida em Java.
 
-## 🎯 Objetivo do Software  
-O objetivo deste sistema é auxiliar no gerenciamento de estoque, permitindo o cadastro e a consulta de produtos e fornecedores. O software oferece uma interface simples e funcional, conectada a um banco MySQL, permitindo que os dados sejam persistidos corretamente.
+## Status do Projeto
 
-## 📦 Funcionalidades Implementadas  
-- Tela de Login por níveis de acesso (Administrador, Operador e Usuário)  
-- Leitura de credenciais a partir de arquivo TXT  
-- Cadastro de Fornecedores  
-- Cadastro de Produtos  
-- Consulta de Fornecedores  
-- Consulta de Produtos  
-- Conexão e manipulação de dados no MySQL  
-- Organização do código seguindo boas práticas (DAO, Classes, Views separadas)
+O projeto não foi totalmente finalizado.
 
-## 📝 Observações Importantes  
-- O projeto contém um arquivo `.TXT` com os usuários:  
-  - **ADMINISTRADOR** – senha: 123  
-  - **OPERADOR** – senha: 123  
-  - **USER** – senha: 123  
+Algumas funcionalidades previstas inicialmente não puderam ser concluídas devido ao cronograma acadêmico e ao desenvolvimento simultâneo de outras unidades curriculares. Mesmo assim, as principais funcionalidades do sistema encontram-se implementadas e operacionais.
 
-- Um arquivo `.SQL` acompanha o repositório para facilitar a criação das tabelas e inserção de dados.
+## Tecnologias Utilizadas
 
-- Há um pacote extra contendo telas de exclusão que não foram implementadas devido a problemas na exclusão via banco, e por limitação de tempo considerando o desenvolvimento simultâneo da UC11.
+* Java
+* Java Swing
+* MySQL
+* JDBC
+* Git
+* GitHub
+* NetBeans IDE
 
-## 📁 Estrutura geral do projeto  
-- **/src** → Código-fonte Java  
-- **/Telas** → Interface gráfica  
-- **/DAO** → Classes de acesso ao banco de dados  
-- **/Classes** → Entidades do sistema  
-- **/Conexao** → Classe de conexão MySQL  
-- **usuario.txt** → Arquivo de níveis de acesso  
-- **backup.sql** → Script com informações de produtos e fornecedores  
+## Funcionalidades Implementadas
+
+* Sistema de login com níveis de acesso
+* Leitura de credenciais através de arquivo TXT
+* Cadastro de produtos
+* Cadastro de fornecedores
+* Consulta de produtos
+* Consulta de fornecedores
+* Controle de movimentação de estoque
+* Histórico de movimentações
+* Integração com banco de dados MySQL
+* Organização do código utilizando DAO, Classes de Modelo e Views
+
+## Telas do Sistema
+
+### Login
+
+![Tela de Login](screenshots/login.png)
+
+### Dashboard
+
+![Dashboard](screenshots/dashboard.png)
+
+### Movimentação de Estoque
+
+![Movimentação](screenshots/estoque-movimentacao.png)
+
+### Histórico de Movimentações
+
+![Histórico](screenshots/historico-movimentacao.png)
+
+### Lista de Produtos
+
+![Lista de Produtos](screenshots/lista-produtos.png)
+
+## Banco de Dados
+
+Para executar o projeto é necessário criar um banco de dados chamado:
+
+```sql
+CREATE DATABASE controle_estoque;
+```
+
+Após a criação do banco, importe o arquivo SQL disponibilizado na pasta:
+
+```text
+banco/
+```
+
+Também é necessário adicionar ao projeto o driver JDBC do MySQL (`mysql-connector-j`) para que a aplicação consiga realizar a conexão com o banco de dados.
+
+## Usuários para Teste
+
+Os usuários abaixo foram criados apenas para fins acadêmicos e demonstração das funcionalidades do sistema:
+
+| Perfil        | Senha |
+| ------------- | ----- |
+| Administrador | 123   |
+| Operador      | 123   |
+| Usuário       | 123   |
+
+As informações de login também estão disponíveis na pasta:
+
+```text
+docs/
+```
+
+## Estrutura do Projeto
+
+```text
+banco/
+docs/
+screenshots/
+src/
+├── classes
+├── dao
+├── conexao
+└── view
+```
+
+## Observações
+
+Existe um conjunto adicional de telas relacionadas à exclusão de registros. Essas funcionalidades não foram concluídas devido a dificuldades encontradas durante a implementação e ao prazo disponível para desenvolvimento do projeto.
+
+Este sistema foi desenvolvido com finalidade educacional para aplicação prática dos conhecimentos adquiridos durante o curso Técnico em Desenvolvimento de Software do Senac.
+
+## Autor
+
+Matheus Silva Melo
